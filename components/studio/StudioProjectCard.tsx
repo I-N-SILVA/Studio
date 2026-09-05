@@ -21,7 +21,7 @@ export default function StudioProjectCard({
   const caseStudy = caseStudies.find((study) => study.projectId === project.id);
   const href = caseStudy
     ? routes.studio.work(caseStudy.slug)
-    : `/projects/${project.id}`;
+    : project.link ?? project.github ?? `https://iamnsilva.me/projects/${project.id}`;
 
   return (
     <Reveal delay={index * 0.08} className={featured ? "md:col-span-2" : undefined}>

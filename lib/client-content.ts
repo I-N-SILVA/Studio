@@ -16,7 +16,7 @@ export const CLIENT_SITE = {
   DESCRIPTION:
     "Independent AI consulting for practical workflows. I help teams identify useful opportunities, build automation and agent systems, and take them into everyday use.",
   EMAIL: "iannogueira@proton.me",
-  PORTFOLIO_URL: "/",
+  PORTFOLIO_URL: "https://iamnsilva.me",
 } as const;
 
 export const studioHero = {
