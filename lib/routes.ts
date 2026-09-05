@@ -5,7 +5,7 @@ export const routes = {
   portal: "https://iamnsilva.me/portal",
   studio: {
     root: "/",
-    section: (id: "services" | "work" | "process" | "about" | "faq" | "contact") => `/#${id}`,
+    section: (id: "work" | "process" | "about" | "faq" | "contact") => `/#${id}`,
     work: (caseSlug: string) => `/work/${caseSlug}`,
   },
 } as const;

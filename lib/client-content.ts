@@ -2,7 +2,7 @@ import { projects, type Project } from "@/lib/placeholder-content";
 
 // ─── Studio content ─────────────────────────────────────────────────────
 // Everything the client-facing view needs that the main portfolio doesn't
-// carry: services, FAQs, and outcome-first case studies.
+// carry: FAQs and outcome-first case studies.
 //
 // Case studies live in code because they're portfolio content — they change
 // when the work changes, not when a client does. Per-client pitch pages are

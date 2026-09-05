@@ -10,9 +10,9 @@ import styles from "./StudioNav.module.css";
 
 const LINKS: [label: string, id: string][] = [
   ["Work", "work"],
-  ["Services", "services"],
   ["Process", "process"],
-  ["FAQ", "faq"],
+  ["About", "about"],
+  ["Questions", "faq"],
 ];
 
 export default function StudioNavLinks() {

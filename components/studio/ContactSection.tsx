@@ -13,7 +13,7 @@ export default function ContactSection() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
         <Reveal>
           <p className="font-space-mono text-xs font-bold uppercase tracking-[0.25em] text-black">
-            06 / Discuss your workflow
+            05 / Discuss your workflow
           </p>
           <h2 className="mt-4 font-syne text-4xl font-extrabold uppercase leading-[.9] tracking-[-0.06em] md:text-6xl">
             Bring me the workflow that should work better.
