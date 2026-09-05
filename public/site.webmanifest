@@ -1,0 +1,22 @@
+{
+    "name": "Ian N. Silva Portfolio",
+    "short_name": "INS Portfolio",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "theme_color": "#6F9554",
+    "background_color": "#F1EFE7",
+    "display": "standalone",
+    "start_url": "/"
+}

@@ -1,0 +1,619 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Shaft / Shinbo Design System ────────────────────────────────────── */
+:root {
+  /* Bundled with the app so builds never depend on Google Fonts being online. */
+  --font-inter: "Inter Variable";
+  --font-syne: "Syne Variable";
+  --font-playfair: "Playfair Display Variable";
+  --font-space-mono: "Space Mono";
+  --shaft-bg: 8 8 8;
+  --shaft-surface: 14 14 14;
+  --shaft-surface-alt: 20 20 20;
+  --shaft-cream: 240 234 214;
+  --shaft-cream-dim: 175 168 152;
+  --shaft-crimson: 204 17 34;
+  --shaft-gold: 196 151 58;
+  /* 100 100 100 was 3.38:1 on the 8/8/8 ground — under AA for the 9px
+     labels this token is used for almost everywhere. 130 gives 5.21:1 and
+     still reads as secondary against the cream. */
+  --shaft-muted: 130 130 130;
+  --shaft-border: 38 38 38;
+  --shaft-white: 245 245 240;
+}
+
+/* ─── Light Mode (parchment / archival document) ─────────────────────── */
+html[data-shaft-light] {
+  --shaft-bg: 248 244 234;
+  --shaft-surface: 240 234 220;
+  --shaft-surface-alt: 232 225 208;
+  --shaft-cream: 24 20 14;
+  --shaft-cream-dim: 72 64 52;
+  --shaft-crimson: 28 64 168; /* Pilot Pen Blue */
+  --shaft-gold: 140 99 12; /* 4.42:1 -> 4.86:1 on parchment */
+  --shaft-muted: 110 100 85;
+  --shaft-border: 198 188 168;
+  --shaft-white: 10 8 6;
+}
+
+/* ─── Ink Bleed Typography (Light Mode Only) ─── */
+html[data-shaft-light] body {
+  text-shadow: 0.2px 0.2px 0.4px rgba(24, 20, 14, 0.15);
+  letter-spacing: -0.01em;
+}
+
+/* ─── Paper Texture Overlay ─── */
+.shaft-paper-texture {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+html[data-shaft-light] .shaft-paper-texture {
+  opacity: 0.04;
+}
+
+.shaft-control {
+  min-height: 40px;
+  min-width: 40px;
+}
+
+[id^="shaft-"] {
+  scroll-margin-top: 7rem;
+}
+
+@media (min-width: 768px) {
+  [id^="shaft-"] {
+    scroll-margin-top: 0;
+  }
+}
+
+
+/* ─── Ticker ──────────────────────────────────────────────────────────── */
+@keyframes shaft-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+.shaft-ticker {
+  animation: shaft-ticker 28s linear infinite;
+  will-change: transform;
+}
+
+@keyframes shaft-text-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shaft-line-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.shaft-scanline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.4;
+}
+
+.shaft-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+@keyframes shaft-drift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+.shaft-glitch {
+  animation: shaft-drift 12s infinite ease-in-out;
+}
+
+@keyframes shaft-status-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.shaft-status-pulse {
+  animation: shaft-status-pulse 2s infinite ease-in-out;
+}
+
+/* ─── Blob animations (shared across hero + contact card) ─────────────── */
+
+@layer base {
+  :root {
+    /* Sky Light Theme - RGB */
+    --color-bg-page: 232 244 255;
+    /* #E8F4FF Light Sky */
+    --color-bg-surface: 162 207 254;
+    /* #A2CFFE Baby Blue */
+    --color-bg-surface-elevated: 255 255 255;
+    /* #FFFFFF White */
+    --color-text-primary: 19 48 68;
+    /* #133044 Dark Blue-Grey */
+    --color-text-secondary: 69 101 130;
+    /* #456582 Muted Blue-Grey */
+    --color-accent-primary: 135 206 235;
+    /* #87CEEB Stronger Sky Blue */
+    --color-accent-secondary: 255 229 160;
+    /* #FFE5A0 Aged Gold/Sunlight */
+    --color-border-subtle: 19 48 68;
+    /* Used with 0.1 opacity in mapping */
+    --color-error: 211 47 47;
+
+    /* Semantic Mapping - Light Mode */
+    --background: var(--color-bg-page);
+    --foreground: var(--color-text-primary);
+    --card: var(--color-bg-surface-elevated);
+    --card-foreground: var(--color-text-primary);
+    --popover: var(--color-bg-surface-elevated);
+    --popover-foreground: var(--color-text-primary);
+    --primary: var(--color-accent-primary);
+    --primary-foreground: 255 255 255;
+    --secondary: var(--color-bg-surface);
+    --secondary-foreground: var(--color-text-primary);
+    --muted: var(--color-bg-page);
+    --muted-foreground: var(--color-text-secondary);
+    --accent: var(--color-accent-secondary);
+    --accent-foreground: var(--color-text-primary);
+    --destructive: var(--color-error);
+    --destructive-foreground: 255 255 255;
+    --border: var(--color-border-subtle);
+    --input: var(--color-border-subtle);
+    --ring: var(--color-accent-primary);
+
+    /* Typography Scale - Mobile First */
+    --text-h1: 3rem;
+    --line-height-h1: 1.1;
+    --text-h2: 2rem;
+    --line-height-h2: 1.2;
+    --text-h3: 1.5rem;
+    --line-height-h3: 1.3;
+    --text-body-lg: 1.125rem;
+    --line-height-body-lg: 1.5;
+    --text-body: 1rem;
+    --line-height-body: 1.6;
+    --text-sm: 0.875rem;
+    --line-height-sm: 1.5;
+    --text-tiny: 0.75rem;
+    --line-height-tiny: 1.4;
+
+    /* Spacing & Layout Tokens */
+    --section-gap: 4rem;
+    --section-padding: 2rem;
+
+    /* Border Radius - Refinement */
+    --radius-rounded: 20px;
+    --radius-standard: 16px;
+    --radius-subtle: 8px;
+    --radius-sharp: 0px;
+    --radius-full: 9999px;
+    --radius: 1rem;
+
+    --sidebar-background: var(--color-bg-surface-elevated);
+    --sidebar-foreground: var(--color-text-primary);
+    --sidebar-primary: var(--color-accent-primary);
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: var(--color-bg-page);
+    --sidebar-accent-foreground: var(--color-accent-primary);
+    --sidebar-border: var(--color-border-subtle);
+    --sidebar-ring: var(--color-accent-primary);
+  }
+
+  .dark {
+    /* Night Sky Theme - RGB */
+    --color-bg-page: 5 8 22;
+    /* #050816 Deep Navy */
+    --color-bg-surface: 11 16 32;
+    /* #0B1020 Dark Panel */
+    --color-bg-surface-elevated: 17 24 39;
+    /* #111827 Dark Blue-Grey */
+    --color-text-primary: 229 240 255;
+    /* #E5F0FF Off-white Blue */
+    --color-text-secondary: 169 187 216;
+    /* #A9BBD8 Muted Blue */
+    --color-accent-primary: 162 207 254;
+    /* #A2CFFE Baby Blue Glow */
+    --color-accent-secondary: 75 132 216;
+    /* #4B84D8 Deeper Sky */
+    --color-border-subtle: 148 163 184;
+    /* Used with 0.25 opacity */
+    --color-error: 229 115 115;
+
+    /* Semantic Mapping - Dark Mode */
+    --background: var(--color-bg-page);
+    --foreground: var(--color-text-primary);
+    --card: var(--color-bg-surface);
+    --card-foreground: var(--color-text-primary);
+    --popover: var(--color-bg-surface);
+    --popover-foreground: var(--color-text-primary);
+    --primary: var(--color-accent-primary);
+    --primary-foreground: 5 8 22;
+    --secondary: var(--color-bg-surface-elevated);
+    --secondary-foreground: var(--color-text-primary);
+    --muted: var(--color-bg-surface);
+    --muted-foreground: var(--color-text-secondary);
+    --accent: var(--color-accent-secondary);
+    --accent-foreground: var(--color-text-primary);
+    --destructive: var(--color-error);
+    --destructive-foreground: 255 255 255;
+    --border: var(--color-border-subtle);
+    --input: var(--color-border-subtle);
+    --ring: var(--color-accent-primary);
+
+    --sidebar-background: var(--color-bg-surface);
+    --sidebar-foreground: var(--color-text-primary);
+    --sidebar-primary: var(--color-accent-primary);
+    --sidebar-primary-foreground: 5 8 22;
+    --sidebar-accent: var(--color-bg-page);
+    --sidebar-accent-foreground: var(--color-accent-primary);
+    --sidebar-border: var(--color-border-subtle);
+    --sidebar-ring: var(--color-accent-primary);
+  }
+
+  /* Animated Grain & Scanline Overlays */
+  .noise-bg::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
+    background-size: 150px 150px, 100% 2px, 3px 100%;
+    opacity: .04;
+    z-index: 9999;
+    pointer-events: none;
+    animation: noise 8s steps(10) infinite;
+  }
+
+  /* Paper Texture Overlay - Removed external dependency for performance */
+  /* .paper-texture::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  } */
+
+  @keyframes noise {
+    0% {
+      transform: translate(0, 0)
+    }
+
+    10% {
+      transform: translate(-5%, -5%)
+    }
+
+    20% {
+      transform: translate(-10%, 5%)
+    }
+
+    30% {
+      transform: translate(5%, -10%)
+    }
+
+    40% {
+      transform: translate(-5%, 15%)
+    }
+
+    50% {
+      transform: translate(-10%, 5%)
+    }
+
+    60% {
+      transform: translate(15%, 0)
+    }
+
+    70% {
+      transform: translate(0, 10%)
+    }
+
+    80% {
+      transform: translate(-15%, 0)
+    }
+
+    90% {
+      transform: translate(10%, 5%)
+    }
+
+    100% {
+      transform: translate(5%, 0)
+    }
+  }
+
+  body {
+    @apply text-foreground scroll-smooth antialiased;
+    background: var(--sky-page-bg);
+    background-attachment: fixed;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .dark body {
+    background: var(--night-page-bg);
+    background-attachment: fixed;
+  }
+
+  /* Magazine Typography Utilities */
+  .magazine-title {
+    @apply font-black tracking-tighter uppercase leading-[0.8] font-syne;
+    text-shadow: 2px 2px 0px rgba(var(--primary), 0.2);
+  }
+
+  /* ─── Focus ──────────────────────────────────────────────────────────
+     Keyboard focus was invisible on the landing page: StudioShell styles it
+     for /studio, but nothing did for the shaft pages, and two components
+     removed the browser default outright. `:focus-visible` (not `:focus`)
+     so a mouse click doesn't ring every button it touches. */
+  :where(a, button, [role="button"], summary, input, select, textarea,
+    [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid rgb(var(--shaft-crimson, 204 17 34));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Skip link — first thing in the tab order, visible only once focused. */
+  .skip-link {
+    position: absolute;
+    left: 12px;
+    top: -100px;
+    z-index: 10000;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    background: rgb(var(--foreground));
+    color: rgb(var(--background));
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 12px;
+  }
+
+  /* Keep the operating-system pointer visible on every surface. The previous
+     animated cursor hid it at desktop widths, leaving no pointer at all when
+     the overlay failed to mount or blended into an image. */
+  a,
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass-window {
+    @apply bg-background/40 backdrop-blur-xl border border-white/10;
+  }
+
+  .subtle-hover-effect {
+    @apply transition-all duration-300 ease-in-out;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.01);
+      /* Slight lift and scale */
+      box-shadow: 0 8px 20px rgba(var(--color-accent-primary), 0.15), 0 0 0 1px rgba(var(--color-accent-primary), 0.1);
+      /* Subtle glow/shadow */
+    }
+  }
+}
+
+/* ─── Blob animations (shared across hero + contact card) ─────────────── */
+@keyframes blob-1 {
+
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  33% {
+    transform: scale(1.2) translate(50px, 30px);
+  }
+
+  66% {
+    transform: scale(1.1) translate(20px, -20px);
+  }
+}
+
+@keyframes blob-2 {
+
+  0%,
+  100% {
+    transform: scale(1.2) translate(0, 0);
+  }
+
+  33% {
+    transform: scale(1) translate(-50px, -40px);
+  }
+
+  66% {
+    transform: scale(1.1) translate(-20px, 20px);
+  }
+}
+
+.animate-blob-1 {
+  animation: blob-1 15s infinite linear;
+}
+
+.animate-blob-2 {
+  animation: blob-2 18s infinite linear;
+}
+
+/* ─── Intro overlays ─────────────────────────────────────────────────── */
+/*
+ * Stamped on <html> before first paint by the inline script in layout.tsx
+ * when this session has already seen the intro. React reaches the same
+ * conclusion a moment later and unmounts these; this just prevents the frame
+ * in between from flashing the boot screen at a returning visitor.
+ */
+html[data-booted] .shaft-intro-overlay {
+  display: none !important;
+}
+
+/* ─── Respect user motion preferences ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-blob-1,
+  .animate-blob-2 {
+    animation: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* ─── Error and not-found fallbacks ──────────────────────────────────── */
+/*
+ * Deliberately styled with plain tokens rather than the Shaft components:
+ * these render when something has already gone wrong, so they must not
+ * depend on the boot sequence, framer-motion, or a locale provider.
+ */
+.shaft-fallback {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+  background: rgb(var(--shaft-bg));
+  color: rgb(var(--shaft-cream));
+}
+.shaft-fallback-eyebrow {
+  margin: 0;
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgb(var(--shaft-gold));
+}
+.shaft-fallback-title {
+  margin: 0;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1;
+}
+.shaft-fallback-body {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgb(var(--shaft-cream-dim));
+}
+.shaft-fallback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+.shaft-fallback-link {
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--shaft-cream));
+  background: transparent;
+  border: 1px solid rgb(var(--shaft-border));
+  border-radius: 2px;
+  padding: 10px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.18s, color 0.18s;
+}
+.shaft-fallback-link:hover,
+.shaft-fallback-link:focus-visible {
+  border-color: rgb(var(--shaft-crimson));
+  color: rgb(var(--shaft-crimson));
+  outline: none;
+}
+.shaft-fallback-ref {
+  margin: 4px 0 0;
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: rgb(var(--shaft-muted));
+}
+
+/* ─── Diagnostic panel ───────────────────────────────────────────────
+   Shown inside .shaft-fallback when an admin hits a lookup that failed.
+   Monospace and boxed because it carries a Postgres error verbatim — it is
+   evidence to copy, not prose to read. */
+.os-diagnostic {
+  max-width: 60ch;
+  margin: 26px auto 0;
+  padding: 16px 18px;
+  text-align: left;
+  border: 1px solid rgb(var(--shaft-border));
+  background: rgb(var(--shaft-surface));
+  border-radius: 3px;
+}
+.os-diagnostic-label {
+  font-family: var(--font-space-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--shaft-muted));
+  margin: 0 0 8px;
+}
+.os-diagnostic-detail {
+  display: block;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgb(var(--shaft-cream));
+  word-break: break-word;
+}
+.os-diagnostic-hint {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgb(var(--shaft-muted));
+  margin: 12px 0 0;
+}
+.os-diagnostic-hint code {
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.9em;
+  color: rgb(var(--shaft-cream));
+}
