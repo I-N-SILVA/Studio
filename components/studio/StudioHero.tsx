@@ -91,7 +91,14 @@ export default function StudioHero() {
         </div>
 
         <div className={styles.introRow}>
-          <p className={styles.intro}>{studioHero.body}</p>
+          <div>
+            <p className={styles.intro}>{studioHero.body}</p>
+            <ul className={styles.proof} aria-label="Working principles">
+              <li>Direct with the builder</li>
+              <li>Human review built in</li>
+              <li>Deployed in your accounts</li>
+            </ul>
+          </div>
           <div className={styles.actions}>
             <Link href={routes.studio.section("contact")} className={styles.primaryAction}>
               {studioHero.primaryCta}<ArrowRight aria-hidden="true" />

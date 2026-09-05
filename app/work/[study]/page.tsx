@@ -182,7 +182,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
             )}
             <div>
               <p className="font-space-mono text-[10px] uppercase tracking-[0.2em] text-stone-400">
-                Services
+                Disciplines
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {cs.services.map((s) => (
